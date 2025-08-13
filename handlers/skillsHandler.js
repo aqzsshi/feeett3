@@ -301,7 +301,7 @@ async function handleComponent(interaction, client) {
     switch (interaction.customId) {
       case 'skills_setup':
         await executeSetup(interaction, client);
-        break;
+        return true;
       case 'skills_view_own':
         const userData = getUserData(interaction.user.id);
         if (!userData.characterName) {
@@ -309,14 +309,14 @@ async function handleComponent(interaction, client) {
             content: '❌ У вас не настроен персонаж. Используйте `/настройканавыков`',
             ephemeral: true
         });
-          return;
+          return true;
         }
         const embed = createSkillsEmbed(interaction.user, userData, client);
         await interaction.reply({ embeds: [embed], ephemeral: true });
-        return;
+        return true;
       case 'skills_change_name':
         await executeChangeName(interaction, client);
-        break;
+        return true;
     }
   }
 
@@ -332,7 +332,7 @@ async function handleComponent(interaction, client) {
           content: '❌ Уровень навыка должен быть числом от 0 до 5',
           ephemeral: true
         });
-        return;
+        return true;
       }
 
       // Поиск навыка
@@ -342,7 +342,7 @@ async function handleComponent(interaction, client) {
           content: `❌ Неизвестный навык: ${skillType}\n\nДоступные навыки:\n${SKILLS.map(s => `• ${s.name}`).join('\n')}`,
           ephemeral: true
         });
-        return;
+        return true;
       }
 
       // Обновление данных
@@ -357,6 +357,7 @@ async function handleComponent(interaction, client) {
         .setColor('#00FF00');
 
       await interaction.reply({ embeds: [embed], ephemeral: true });
+      return true;
     }
 
     if (interaction.customId === 'skills_change_name_modal') {
@@ -372,6 +373,7 @@ async function handleComponent(interaction, client) {
         .setColor('#00FF00');
 
       await interaction.reply({ embeds: [embed], ephemeral: true });
+      return true;
     }
   }
 
@@ -382,16 +384,16 @@ async function handleComponent(interaction, client) {
       switch (selectedCommand) {
         case 'setup':
           await executeSetup(interaction, client);
-          break;
+          return true;
         case 'change_name':
           await executeChangeName(interaction, client);
-          break;
+          return true;
         case 'view_other':
           await interaction.reply({
             content: '🔍 Используйте команду `/навыки @пользователь` для просмотра навыков другого игрока.',
             ephemeral: true
           });
-          break;
+          return true;
         case 'view_own':
           const userData = getUserData(interaction.user.id);
           if (!userData.characterName) {
@@ -399,20 +401,21 @@ async function handleComponent(interaction, client) {
               content: '❌ У вас не настроен персонаж. Используйте `/настройканавыков`',
               ephemeral: true
             });
-            return;
+            return true;
           }
           const embed = createSkillsEmbed(interaction.user, userData, client);
           await interaction.reply({ embeds: [embed], ephemeral: true });
-          break;
+          return true;
         case 'help':
           await interaction.reply({
             content: '💡 **Доступные команды навыков:**\n• `/меню_навыков` - главное меню\n• `/настройканавыков` - настроить навыки\n• `/навыки_имя_персонажа` - сменить имя\n• `/навыки @пользователь` - посмотреть навыки игрока\n\n**Доступные навыки:**\n' + SKILLS.map(s => `${s.emoji} ${s.name}`).join(', '),
             ephemeral: true
           });
-          break;
+          return true;
       }
     }
   }
+  return false;
 }
 
 // Вспомогательные функции

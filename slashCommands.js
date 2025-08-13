@@ -76,9 +76,11 @@ function handleInteractions(client) {
       for (const cmd of client.commands.values()) {
         if (typeof cmd.handleComponent === 'function') {
           try {
-            await cmd.handleComponent(interaction, client);
-            handled = true;
-            break;
+            const result = await cmd.handleComponent(interaction, client);
+            if (result) {
+              handled = true;
+              break;
+            }
           } catch (err) {
             console.error(`Ошибка в handleComponent команды ${cmd.data?.name}:`, err);
           }
@@ -87,9 +89,11 @@ function handleInteractions(client) {
         // Проверяем обработчики модальных окон
         if (typeof cmd.handleModal === 'function' && interaction.isModalSubmit()) {
           try {
-            await cmd.handleModal(interaction, client);
-            handled = true;
-            break;
+            const result = await cmd.handleModal(interaction, client);
+            if (result) {
+              handled = true;
+              break;
+            }
           } catch (err) {
             console.error(`Ошибка в handleModal команды ${cmd.data?.name}:`, err);
           }

@@ -38,7 +38,7 @@ async function execute(interaction, client) {
 }
 
 async function handleComponent(interaction, client) {
-  if (!interaction.isButton()) return;
+  if (!interaction.isButton()) return false;
 
   // Сначала обработка refresh-кнопки
   if (interaction.customId.startsWith('refresh_')) {
@@ -57,7 +57,7 @@ async function handleComponent(interaction, client) {
         content: `⏳ Задание клуба **${clubId}** ещё идёт. Завершится в **${formattedTime} МСК** (через ${remainingMin} мин).`,
         ephemeral: true,
       });
-      return;
+      return true;
     }
     // Если КД закончился — начинаем заново
     userCooldown[clubId] = now;
@@ -94,12 +94,12 @@ async function handleComponent(interaction, client) {
     } catch (err) {
       console.warn(`❗ Не удалось открыть ЛС ${interaction.user.tag}:`, err.message);
     }
-    return;
+    return true;
   }
 
   // Дальше обработка club_кнопок
   const [prefix, clubId] = interaction.customId.split('_');
-  if (prefix !== 'club') return;
+  if (prefix !== 'club') return false;
 
   const userId = interaction.user.id;
   const now = Date.now();
@@ -110,10 +110,11 @@ async function handleComponent(interaction, client) {
   if (now - lastUsed < cooldown) {
     const remainingMs = cooldown - (now - lastUsed);
     const remainingMin = Math.ceil(remainingMs / (60 * 1000));
-    return interaction.reply({
+    await interaction.reply({
       content: `⏳ Задание клуба **${clubId}** уже начато. Подождите ${remainingMin} мин.`,
       ephemeral: true,
     });
+    return true;
   }
 
   // Устанавливаем новый кулдаун
@@ -149,6 +150,7 @@ async function handleComponent(interaction, client) {
       ephemeral: true,
     });
   }
+  return true;
 }
 
 module.exports = { data, execute, handleComponent };
