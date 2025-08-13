@@ -26,7 +26,7 @@ async function execute(interaction, client) {
     .setColor('#1D1D1E');
 
   const row = new ActionRowBuilder().addComponents(
-    CLUBS.map((club) =>
+    ...CLUBS.map((club) =>
       new ButtonBuilder()
         .setCustomId(`club_${club.id}`)
         .setLabel(club.label)

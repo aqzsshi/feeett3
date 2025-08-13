@@ -100,14 +100,21 @@ function handleInteractions(client) {
         }
       }
       
-      // Если ни одна команда не обработала, пробуем модуль навыков
+      // Если ни одна команда не обработала, пробуем ручные обработчики
       if (!handled) {
+        let consumed = false;
         try {
           const { handleComponent } = require('./handlers/skillsHandler');
-          await handleComponent(interaction, client);
-        } catch (e) {
-          // Игнорируем ошибки модуля навыков
-        }
+          consumed = (await handleComponent(interaction, client)) || consumed;
+        } catch {}
+        try {
+          const { handleComponent } = require('./handlers/clubCommandHandler');
+          consumed = (await handleComponent(interaction, client)) || consumed;
+        } catch {}
+        try {
+          const { handleComponent } = require('./handlers/applicationHandler');
+          consumed = (await handleComponent(interaction, client)) || consumed;
+        } catch {}
       }
     }
   });
