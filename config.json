@@ -1,0 +1,16 @@
+{
+  "token": "MTMxNTY4ODI5MzE5MDQ2NzYwNA.GUFLG3.2TPuF5FMHRWdcAlhZ1zJmYyQzK111WrOWUpvzI",
+  "familyChannelId": "1295713877572718624",
+  "mentionRoleIds": ["994739130774863932", "1295715648730697758", "1368364895216734298"],
+  "callRoleIds": ["1377587794691489912"],
+  "joinNotifyChannelId": "1366909166676873216",
+  "enableApplicationAnimation": true,
+  "commonPassword": "youresser!",
+  "adminRoleId": "994739130774863932",
+  "images": {
+    "skillsMenuBanner": "https://i.ibb.co/GNSYc1Q/5-1.png",
+    "clubMenuBanner": "https://i.ibb.co/GNSYc1Q/5-1.png",
+    "rednecksClubBanner": "https://i.imgur.com/brtjNoD.png",
+    "statusCommandGif": "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXQ0anV5bzg0YzI5MWN1M2lwN3Bteng4YWxlNWx6b2E4cXp3dHNtciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26tn33aiTi1jkl6H6/giphy.gif"
+  }
+}
