@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
-const { token } = require('./config.json');
 const { loadCommands, registerCommands, handleInteractions } = require('./slashCommands');
+
+const token = process.env.DISCORD_TOKEN || (require('./config.json').token);
 
 const client = new Client({
   intents: [

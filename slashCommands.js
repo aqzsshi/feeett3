@@ -34,16 +34,20 @@ async function registerCommands(client) {
     console.error('❌ Ошибка при глобальной регистрации команд:', error);
     
     // Если глобальная регистрация не удалась, пробуем зарегистрировать на конкретном сервере
-    console.log('🔄 Пробуем зарегистрировать команды на конкретном сервере...');
-    const guildId = '973961679228502016';
-    const guild = client.guilds.cache.get(guildId);
-    if (guild) {
-      try {
-        const commandsData = Array.from(client.commands.values()).map(cmd => cmd.data);
-        await guild.commands.set(commandsData);
-        console.log('✅ Slash-команды зарегистрированы на сервере!');
-      } catch (guildError) {
-        console.error('❌ Ошибка при регистрации на сервере:', guildError);
+    const fallbackGuildId = process.env.FALLBACK_GUILD_ID;
+    if (fallbackGuildId) {
+      console.log('🔄 Пробуем зарегистрировать команды на сервере (fallback):', fallbackGuildId);
+      const guild = client.guilds.cache.get(fallbackGuildId);
+      if (guild) {
+        try {
+          const commandsData = Array.from(client.commands.values()).map(cmd => cmd.data);
+          await guild.commands.set(commandsData);
+          console.log('✅ Slash-команды зарегистрированы на сервере (fallback)!');
+        } catch (guildError) {
+          console.error('❌ Ошибка при регистрации на сервере (fallback):', guildError);
+        }
+      } else {
+        console.warn('⚠️ Fallback guild не найден в кеше.');
       }
     }
   }
